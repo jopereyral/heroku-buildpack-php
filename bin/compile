@@ -315,8 +315,8 @@ composer --version 2> /dev/null | tail -n 1 | indent
 
 echo "debug"
 
-composer_vendordir=$app_subdir/$(composer config vendor-dir 2> /dev/null | tail -n 1) # tail, as composer echos outdated version warnings to STDOUT
-composer_bindir=$app_subdir/$(composer config bin-dir 2> /dev/null | tail -n 1) # tail, as composer echos outdated version warnings to STDOUT
+composer_vendordir=$(composer config vendor-dir 2> /dev/null | tail -n 1) # tail, as composer echos outdated version warnings to STDOUT
+composer_bindir=$(composer config bin-dir 2> /dev/null | tail -n 1) # tail, as composer echos outdated version warnings to STDOUT
 
 echo "get composer subdir $composer_vendordir $composer_bindir"
 
