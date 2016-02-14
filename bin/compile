@@ -62,7 +62,7 @@ if [[ "$buildpack_branch" != v* && "$buildpack_branch" != "master" ]]; then
 fi
 s3_url="https://lang-php.s3.amazonaws.com/dist-${STACK}-${s3_url:-"master"}"
 
-cd $build_dir
+#cd $build_dir
 
 if [[ -n ${COMPOSER:-} ]]; then
     status "Using '$COMPOSER' (from "'$COMPOSER env var) for installation.'
