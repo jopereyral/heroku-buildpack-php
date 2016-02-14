@@ -4,11 +4,11 @@ It uses Composer for dependency management, supports PHP or HHVM (experimental) 
 
 ## The Subdirectory Feature
 
-The only difference between the heroku's standard PHP buildpack is that you can *run an application in a Subdirectory*
+The only difference between the heroku's standard PHP buildpack is that you can **run an application in a Subdirectory**
 
 For now the default subdirectory is application.
 
-*TODO*
+**TODO**
 
 * Get the subdirectory from a ENV var
 
