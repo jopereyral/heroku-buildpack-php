@@ -40,6 +40,7 @@ cache_dir=$2/php
 mkdir -p "$cache_dir"
 env_dir=${3:-} # Anvil has none
 bp_dir=$(cd $(dirname $0); cd ..; pwd)
+app_subdir=application
 
 # convenience functions
 source $bp_dir/bin/util/common.sh
@@ -67,28 +68,28 @@ cd $build_dir
 if [[ -n ${COMPOSER:-} ]]; then
     status "Using '$COMPOSER' (from "'$COMPOSER env var) for installation.'
 else
-    export COMPOSER="/app/application/composer.json"
+    export COMPOSER="composer.json"
 fi
-export COMPOSER_LOCK=application/$(basename "$COMPOSER" ".json")".lock" # replace .json with .lock if it exists, append .lock otherwise
+export COMPOSER_LOCK=$(basename "$COMPOSER" ".json")".lock" # replace .json with .lock if it exists, append .lock otherwise
 
 # a bunch of sanity checks first
-if [[ -s "$COMPOSER" ]]; then
-    cat "$COMPOSER" | python -mjson.tool &> /dev/null || error "Could not parse '$COMPOSER'; make sure it's valid!"
-    if [[ ! -f "$COMPOSER_LOCK" ]]; then
-        cat "$COMPOSER" | python -c 'import sys, json; sys.exit(bool(json.load(sys.stdin).get("require", {})))' 2> /dev/null || error "Your '$COMPOSER' lists dependencies inside 'require',
+if [[ -s "$app_subdir/$COMPOSER" ]]; then
+    cat "$app_subdir/$COMPOSER" | python -mjson.tool &> /dev/null || error "Could not parse '$COMPOSER'; make sure it's valid!"
+    if [[ ! -f "$app_subdir/$COMPOSER_LOCK" ]]; then
+        cat "$app_subdir/$COMPOSER" | python -c 'import sys, json; sys.exit(bool(json.load(sys.stdin).get("require", {})))' 2> /dev/null || error "Your '$COMPOSER' lists dependencies inside 'require',
 but no '$COMPOSER_LOCK' was found. Please run 'composer update' to
 re-generate '$COMPOSER_LOCK' if necessary, and commit it into your
 repository. For more information, please refer to the docs at
 https://devcenter.heroku.com/articles/php-support#activation"
     else
-        cat "$COMPOSER_LOCK" | python -mjson.tool &> /dev/null || error "Could not parse '$COMPOSER_LOCK'; make sure it's valid!"
-        if [[ $(cat "$COMPOSER_LOCK" | python -c 'import sys, json; print json.load(sys.stdin)["hash"]' 2> /dev/null) != $(md5sum "$COMPOSER" | cut -d " " -f1) ]]; then
+        cat "$app_subdir/$COMPOSER_LOCK" | python -mjson.tool &> /dev/null || error "Could not parse '$COMPOSER_LOCK'; make sure it's valid!"
+        if [[ $(cat "$app_subdir/$COMPOSER_LOCK" | python -c 'import sys, json; print json.load(sys.stdin)["hash"]' 2> /dev/null) != $(md5sum "$COMPOSER" | cut -d " " -f1) ]]; then
             warning "Your '$COMPOSER_LOCK' is not up to date with the latest
 changes in '$COMPOSER'. To ensure you are not getting stale
 dependencies, run 'composer update' on your machine and commit
 any changes to Git before pushing again."
         fi
-        cat "$COMPOSER_LOCK" | python -c 'import sys, json; l = json.load(sys.stdin); sys.exit(not(l["minimum-stability"] == "stable"));' 2> /dev/null || warning "Your '$COMPOSER' contains a non-'stable' setting
+        cat "$app_subdir/$COMPOSER_LOCK" | python -c 'import sys, json; l = json.load(sys.stdin); sys.exit(not(l["minimum-stability"] == "stable"));' 2> /dev/null || warning "Your '$COMPOSER' contains a non-'stable' setting
 for 'minimum-stability'. This may cause the installation of
 unstable versions of runtimes and extensions during this deploy.
 It is recommended that you always use stability flags instead,
@@ -96,7 +97,7 @@ even if you have 'prefer-stable' enabled. For more information,
 see https://getcomposer.org/doc/01-basic-usage.md#stability"
     fi
 else
-    if [[ ! -f "$COMPOSER" ]]; then
+    if [[ ! -f "$app_subdir/$COMPOSER" ]]; then
         warning "No '$COMPOSER' found.
 Using 'index.php' to declare PHP applications is considered legacy
 functionality and may lead to unexpected behavior."
