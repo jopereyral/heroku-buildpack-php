@@ -360,7 +360,7 @@ unset COMPOSER_GITHUB_OAUTH_TOKEN
 
 echo "debug"
 # install dependencies unless composer.json is completely empty (in which case it'd talk to packagist.org which may be slow and is unnecessary)
-cat "$app_subdir$COMPOSER" | python -c 'import sys,json; sys.exit(not json.load(sys.stdin));' && composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction 2>&1 | indent
+cat "$app_subdir$COMPOSER" | python -c 'import sys,json; sys.exit(not json.load(sys.stdin));' && composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction -d $app_subdir 2>&1 | indent
 
 echo "debug2"
 
