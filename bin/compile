@@ -316,8 +316,6 @@ composer --version 2> /dev/null | tail -n 1 | indent
 composer_vendordir=$app_subdir$(composer config vendor-dir -d $app_subdir 2> /dev/null | tail -n 1) # tail, as composer echos outdated version warnings to STDOUT
 composer_bindir=$app_subdir$(composer config bin-dir -d $app_subdir 2> /dev/null | tail -n 1) # tail, as composer echos outdated version warnings to STDOUT
 
-echo "get composer subdir $composer_vendordir"
-
 # throw a notice if people have added their vendor dir to Git; that's bad practice and makes everything slow and cluttered
 if [[ -f "$composer_vendordir/autoload.php" && -d "$composer_vendordir/composer" ]]; then
     # we should not do this check separately; there is no reliable way of telling whether or not it really is the real Composer bin dir or if it comes from somewhere else
@@ -368,7 +366,7 @@ This package may only be used as a dependency in 'require-dev'!"
 
 if cat "$app_subdir$COMPOSER" | python -c 'import sys,json; sys.exit("compile" not in json.load(sys.stdin).get("scripts", {}));'; then
     status "Running 'composer compile'..."
-    composer run-script --no-dev --no-interaction compile 2>&1 | indent
+    composer run-script --no-dev --no-interaction compile -d $app_subdir 2>&1 | indent
 fi
 
 status "Preparing runtime environment..."
