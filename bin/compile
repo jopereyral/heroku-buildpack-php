@@ -298,8 +298,6 @@ fi
 
 status "Installing dependencies..."
 
-echo "debug"
-
 # check if we should use a composer.phar version bundled with the project
 if [[ -f "composer.phar" ]]; then
     [[ -x "composer.phar" ]] || error "File '/composer.phar' isn't executable; please 'chmod +x'!"
@@ -314,6 +312,8 @@ fi
 # echo composer version for info purposes
 # tail to get rid of outdated version warnings (Composer sends those to STDOUT instead of STDERR)
 composer --version 2> /dev/null | tail -n 1 | indent
+
+echo "debug"
 
 composer_vendordir=$app_subdir/$(composer config vendor-dir 2> /dev/null | tail -n 1) # tail, as composer echos outdated version warnings to STDOUT
 composer_bindir=$app_subdir/$(composer config bin-dir 2> /dev/null | tail -n 1) # tail, as composer echos outdated version warnings to STDOUT
