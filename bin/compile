@@ -83,7 +83,7 @@ repository. For more information, please refer to the docs at
 https://devcenter.heroku.com/articles/php-support#activation"
     else
         cat "$app_subdir/$COMPOSER_LOCK" | python -mjson.tool &> /dev/null || error "Could not parse '$COMPOSER_LOCK'; make sure it's valid!"
-        if [[ $(cat "$app_subdir/$COMPOSER_LOCK" | python -c 'import sys, json; print json.load(sys.stdin)["hash"]' 2> /dev/null) != $(md5sum "$COMPOSER" | cut -d " " -f1) ]]; then
+        if [[ $(cat "$app_subdir/$COMPOSER_LOCK" | python -c 'import sys, json; print json.load(sys.stdin)["hash"]' 2> /dev/null) != $(md5sum "$app_subdir/$COMPOSER" | cut -d " " -f1) ]]; then
             warning "Your '$COMPOSER_LOCK' is not up to date with the latest
 changes in '$COMPOSER'. To ensure you are not getting stale
 dependencies, run 'composer update' on your machine and commit
