@@ -67,7 +67,7 @@ cd $build_dir
 if [[ -n ${COMPOSER:-} ]]; then
     status "Using '$COMPOSER' (from "'$COMPOSER env var) for installation.'
 else
-    export COMPOSER="application/composer.json"
+    export COMPOSER="/app/application/composer.json"
 fi
 export COMPOSER_LOCK=application/$(basename "$COMPOSER" ".json")".lock" # replace .json with .lock if it exists, append .lock otherwise
 
