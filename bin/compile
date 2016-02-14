@@ -35,7 +35,7 @@ set -eu
 shopt -s dotglob
 
 STACK=${STACK:-cedar} # Anvil has none
-build_dir=$1/application
+build_dir=$1
 cache_dir=$2/php
 mkdir -p "$cache_dir"
 env_dir=${3:-} # Anvil has none
@@ -67,7 +67,7 @@ cd $build_dir
 if [[ -n ${COMPOSER:-} ]]; then
     status "Using '$COMPOSER' (from "'$COMPOSER env var) for installation.'
 else
-    export COMPOSER="composer.json"
+    export COMPOSER="application/composer.json"
 fi
 export COMPOSER_LOCK=application/$(basename "$COMPOSER" ".json")".lock" # replace .json with .lock if it exists, append .lock otherwise
 
