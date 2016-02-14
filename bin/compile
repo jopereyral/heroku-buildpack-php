@@ -315,7 +315,7 @@ composer --version 2> /dev/null | tail -n 1 | indent
 
 echo "debug"
 
-echo $(composer config vendor-dir 2> /dev/null | tail -n 1)
+echo $(composer config vendor-dir)
 composer_vendordir=$(composer config vendor-dir 2> /dev/null | tail -n 1) # tail, as composer echos outdated version warnings to STDOUT
 composer_bindir=$(composer config bin-dir 2> /dev/null | tail -n 1) # tail, as composer echos outdated version warnings to STDOUT
 
