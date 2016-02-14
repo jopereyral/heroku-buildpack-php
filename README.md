@@ -1,11 +1,17 @@
 # Heroku buildpack: PHP
 
-![php](https://cloud.githubusercontent.com/assets/51578/8882982/73ea501a-3219-11e5-8f87-311e6b8a86fc.jpg)
-
-
-This is the official [Heroku buildpack](http://devcenter.heroku.com/articles/buildpacks) for PHP applications.
-
 It uses Composer for dependency management, supports PHP or HHVM (experimental) as runtimes, and offers a choice of Apache2 or Nginx web servers.
+
+## The Subdirectory Feature
+
+The only difference between the heroku's standard PHP buildpack is that you can *run an application in a Subdirectory*
+
+For now the default subdirectory is application.
+
+*TODO*
+
+* Get the subdirectory from a ENV var
+
 
 ## Usage
 
@@ -17,7 +23,7 @@ You'll need to use at least an empty `composer.json` in your application.
 
 If you also have files from other frameworks or languages that could trigger another buildpack to detect your application as one of its own, e.g. a `package.json` which might cause your code to be detected as a Node.js application even if it is a PHP application, then you need to manually set your application to use this buildpack:
 
-    heroku buildpacks:set https://github.com/heroku/heroku-buildpack-php
+    heroku buildpacks:set https://github.com/jopereyral/heroku-buildpack-php
 
 Please refer to [Dev Center](https://devcenter.heroku.com/categories/php) for further usage instructions.
 
@@ -35,7 +41,7 @@ The folder `support/build` contains [Bob](http://github.com/kennethreitz/bob-bui
 
 To get started, create a Python app (*Bob* is a Python application) on Heroku inside a clone of this repository, and set your S3 config vars:
 
-    $ heroku create --buildpack https://github.com/heroku/heroku-buildpack-python
+    $ heroku create --buildpack https://github.com/https://github.com/jopereyral/heroku-buildpack-php/heroku-buildpack-python
     $ heroku config:set WORKSPACE_DIR=/app/support/build
     $ heroku config:set AWS_ACCESS_KEY_ID=<your_aws_key>
     $ heroku config:set AWS_SECRET_ACCESS_KEY=<your_aws_secret>
@@ -56,7 +62,7 @@ This only copies over "user-facing" items, but not library dependencies (e.g. `l
     $ heroku run bash
     Running `bash` attached to terminal... up, run.6880
     ~ $ bob build extensions/no-debug-non-zts-20121212/yourextension-1.2.3
-    
+
     Fetching dependencies... found 1:
       - php-5.5.31
     Building formula extensions/no-debug-non-zts-20121212/yourextension-1.2.3
